@@ -11,11 +11,29 @@ let Budget = React.createClass({
             name: 'Chicken',
             cost: '18'
           }, {
+            name: 'Juice',
+            cost: '30'
+          }, {
             name: 'Turkey',
             cost: '5.55'
+          }, {
+            name: 'Cheese',
+            cost: '3.21'
           }
         ],
         location: 'BJs',
+        date: 'Jan 4'
+      },{
+        items: [
+          {
+            name: 'Juice',
+            cost: '30'
+          }, {
+            name: 'Honey',
+            cost: '8.82'
+          }
+        ],
+        location: 'Walmart',
         date: 'Jan 4'
       }
     ];
@@ -24,19 +42,40 @@ let Budget = React.createClass({
       receipts.push(<Receipt items={val.items} location={val.location} date={val.date} />);
     });
     return (
-      <Receipt items={data[0].items} location={data[0].location} date={data[0].date} />
+      <div>
+        {receipts}
+      </div>
     );
   }
 });
 
 let Receipt = React.createClass({
+  getInitialState () {
+    let items = this.props.items.sort(this.nameSort);
+    return {data: items};
+  },
+
+  nameSort (a, b) {
+    if (a.name < b.name) {
+      return -1;
+    } else if (a.name > b.name) {
+      return 1;
+    } else {
+      return 0;
+    }
+  },
+
+  toggleSortNames(e) {
+    this.setState({data: this.state.data.reverse()});
+  },
 
   render () {
-    let items = [];
     let total = 0;
-    this.props.items.forEach((val) => {
-      items.push(<Item name={val.name} cost={val.cost}/>);
+    let itemList = this.state.data.map((val, i) => {
       total += parseFloat(val.cost);
+      return (
+        <Item key={i} name={val.name} cost={val.cost} />
+      );
     });
 
     return (
@@ -45,12 +84,12 @@ let Receipt = React.createClass({
         <table>
           <thead>
             <tr>
-              <th>Item Name</th>
+              <th onClick={this.toggleSortNames}>Item Name</th>
               <th>Cost</th>
             </tr>
           </thead>
           <tbody>
-            {items}
+            {itemList}
             <tr className='total'>
               <td>Total</td>
               <td>{total}</td>
