@@ -51,10 +51,11 @@ let Budget = React.createClass({
 
 let Receipt = React.createClass({
   getInitialState () {
-    let items = this.props.items.sort(this.nameSort);
+    let items = this.props.items.sort(this.priceSort);
     return {data: items};
   },
 
+  // A to Z
   nameSort (a, b) {
     if (a.name < b.name) {
       return -1;
@@ -63,6 +64,11 @@ let Receipt = React.createClass({
     } else {
       return 0;
     }
+  },
+
+  // High to Low
+  priceSort (a, b) {
+    return parseFloat(b.cost) - parseFloat(a.cost);
   },
 
   toggleSortNames(e) {
