@@ -35,11 +35,9 @@ gulp.task('build:server', () => {
 
 gulp.task('build:client', () => {
   gulp.src(clientFiles, clientOptions)
-    .pipe(browserify())
     .pipe(babel({
-      presets: ['react']
-      }))
-    
+      presets: ['es2015']
+    }))
     .pipe(gulp.dest('build'));
 });
 
