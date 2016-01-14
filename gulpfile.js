@@ -25,6 +25,10 @@ let htmlFiles = [
 
 gulp.task('default', ['clean:app', 'build:server', 'build:client', 'build:html']);
 
+gulp.task('watch', () => {
+  gulp.watch(clientFiles, ['build:client']);
+});
+
 gulp.task('build:server', () => {
   gulp.src(serverFiles, serverOptions)
     .pipe(babel({
