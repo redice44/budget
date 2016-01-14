@@ -9,31 +9,31 @@ let Budget = React.createClass({
         items: [
           {
             name: 'Chicken',
-            cost: '18'
+            individual: {
+              unit: 'lbs',
+              quantity: '6',
+              cost: '18'
+            },
+            amount: 1
           }, {
-            name: 'Juice',
-            cost: '30'
+            name: 'Diet Cranberry Juice',
+            individual: {
+              unit: 'oz',
+              quantity: '64',
+              cost: '3.21'
+            },
+            amount: 8
           }, {
-            name: 'Turkey',
-            cost: '5.55'
-          }, {
-            name: 'Cheese',
-            cost: '3.21'
+            name: 'Turkey Patties',
+            individual: {
+              unit: 'lbs',
+              quantity: '1.55',
+              cost: '5.55'
+            },
+            amount: 2
           }
         ],
         location: 'BJs',
-        date: 'Jan 4'
-      },{
-        items: [
-          {
-            name: 'Juice',
-            cost: '30'
-          }, {
-            name: 'Honey',
-            cost: '8.82'
-          }
-        ],
-        location: 'Walmart',
         date: 'Jan 4'
       }
     ];
@@ -91,12 +91,12 @@ let Receipt = React.createClass({
 
   render () {
     let total = this.state.data.reduce((prev, curr) => {
-      return prev + parseFloat(curr.cost);
+      return prev + parseFloat(curr.individual.cost * curr.amount);
     }, 0);
 
     let itemList = this.state.data.map((val, i) => {
       return (
-        <Item key={i} name={val.name} cost={val.cost} />
+        <Item key={i} item={val} />
       );
     });
 
@@ -107,13 +107,17 @@ let Receipt = React.createClass({
           <thead>
             <tr>
               <th onClick={this.toggleSortNames}>Item Name</th>
-              <th onClick={this.toggleSortCost}>Cost</th>
+              <th>Quantity</th>
+              <th>Items Purchased</th>
+              <th>Price per Unit</th>
+              <th>Price per Item</th>
+              <th>Total Spent</th>
             </tr>
           </thead>
           <tbody>
             {itemList}
             <tr className='total'>
-              <td>Total</td>
+              <td colSpan='5'>Total</td>
               <td>{total}</td>
             </tr>
           </tbody>
@@ -125,10 +129,16 @@ let Receipt = React.createClass({
 
 let Item = React.createClass({
   render () {
+    let total = this.props.item.individual.cost * this.props.item.amount;
+    let perUnit = this.props.item.individual.cost / this.props.item.individual.quantity;
     return (
       <tr>
-        <td>{this.props.name}</td>
-        <td>{this.props.cost}</td>
+        <td>{this.props.item.name}</td>
+        <td>{this.props.item.individual.quantity} {this.props.item.individual.unit}</td>
+        <td>x{this.props.item.amount}</td>
+        <td>$ {perUnit} per {this.props.item.individual.unit}</td>
+        <td>{this.props.item.individual.cost}</td>
+        <td>{total}</td>
       </tr>
     );
   }
