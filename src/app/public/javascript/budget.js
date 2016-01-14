@@ -75,7 +75,7 @@ let Receipt = React.createClass({
     if (this.state.sort === 'name') {
       this.setState({data: this.state.data.reverse()});
     } else {
-      console.log('Switching to name sort');
+      console.log('Switching Sort: Name');
       this.setState({sort: 'name', data: this.state.data.sort(this.nameSort)});
     }
   },
@@ -84,15 +84,17 @@ let Receipt = React.createClass({
     if (this.state.sort === 'cost') {
       this.setState({data: this.state.data.reverse()});
     } else {
-      console.log('Switching to cost sort');
+      console.log('Switching Sort: Cost');
       this.setState({sort: 'cost', data: this.state.data.sort(this.priceSort)});
     }
   },
 
   render () {
-    let total = 0;
+    let total = this.state.data.reduce((prev, curr) => {
+      return prev + parseFloat(curr.cost);
+    }, 0);
+
     let itemList = this.state.data.map((val, i) => {
-      total += parseFloat(val.cost);
       return (
         <Item key={i} name={val.name} cost={val.cost} />
       );
