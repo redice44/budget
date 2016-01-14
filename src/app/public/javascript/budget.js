@@ -1,46 +1,45 @@
 //const React = require('react');
 //const ReactDOM = require('react-dom');
+let data = [
+  {
+    items: [
+      {
+        name: 'Chicken',
+        individual: {
+          unit: 'lbs',
+          quantity: '6',
+          cost: '18'
+        },
+        amount: 1
+      }, {
+        name: 'Diet Cranberry Juice',
+        individual: {
+          unit: 'oz',
+          quantity: '64',
+          cost: '3.21'
+        },
+        amount: 8
+      }, {
+        name: 'Turkey Patties',
+        individual: {
+          unit: 'lbs',
+          quantity: '1.55',
+          cost: '5.55'
+        },
+        amount: 2
+      }
+    ],
+    location: 'BJs',
+    date: 'Jan 4'
+  }
+];
 
 let Budget = React.createClass({
   render () {
-    let receipts = [];
-    let data = [
-      {
-        items: [
-          {
-            name: 'Chicken',
-            individual: {
-              unit: 'lbs',
-              quantity: '6',
-              cost: '18'
-            },
-            amount: 1
-          }, {
-            name: 'Diet Cranberry Juice',
-            individual: {
-              unit: 'oz',
-              quantity: '64',
-              cost: '3.21'
-            },
-            amount: 8
-          }, {
-            name: 'Turkey Patties',
-            individual: {
-              unit: 'lbs',
-              quantity: '1.55',
-              cost: '5.55'
-            },
-            amount: 2
-          }
-        ],
-        location: 'BJs',
-        date: 'Jan 4'
-      }
-    ];
-
-    data.forEach((val) => {
-      receipts.push(<Receipt items={val.items} location={val.location} date={val.date} />);
+    let receipts = this.props.data.map((val) => {
+      return (<Receipt items={val.items} location={val.location} date={val.date} />);
     });
+
     return (
       <div>
         {receipts}
@@ -55,6 +54,10 @@ let Receipt = React.createClass({
     return {data: items, sort: 'name'};
   },
 
+/* 
+  Figure out how to make handling sorts more DRY
+*/
+
   // A to Z
   nameSort (a, b) {
     if (a.name < b.name) {
@@ -68,7 +71,13 @@ let Receipt = React.createClass({
 
   // High to Low
   priceSort (a, b) {
-    return parseFloat(b.cost) - parseFloat(a.cost);
+    return parseFloat(b.individual.cost) * parseFloat(b.amount) -
+      parseFloat(a.individual.cost) * parseFloat(a.amount);
+  },
+
+  pricePerUnitSort (a, b) {
+    return parseFloat(b.individual.cost) / parseFloat(b.individual.quantity) -
+      parseFloat(a.individual.cost) / parseFloat(a.individual.quantity);
   },
 
   toggleSortNames(e) {
@@ -86,6 +95,15 @@ let Receipt = React.createClass({
     } else {
       console.log('Switching Sort: Cost');
       this.setState({sort: 'cost', data: this.state.data.sort(this.priceSort)});
+    }
+  },
+
+  toggleSortPricePerUnit(e) {
+    if (this.state.sort === 'pricePerUnit') {
+      this.setState({data: this.state.data.reverse()});
+    } else {
+      console.log('Switching Sort: PricePerUnit');
+      this.setState({sort: 'pricePerUnit', data: this.state.data.sort(this.pricePerUnitSort)});
     }
   },
 
@@ -109,9 +127,9 @@ let Receipt = React.createClass({
               <th onClick={this.toggleSortNames}>Item Name</th>
               <th>Quantity</th>
               <th>Items Purchased</th>
-              <th>Price per Unit</th>
+              <th onClick={this.toggleSortPricePerUnit}>Price per Unit</th>
               <th>Price per Item</th>
-              <th>Total Spent</th>
+              <th onClick={this.toggleSortCost}>Total Spent</th>
             </tr>
           </thead>
           <tbody>
@@ -131,6 +149,7 @@ let Item = React.createClass({
   render () {
     let total = this.props.item.individual.cost * this.props.item.amount;
     let perUnit = this.props.item.individual.cost / this.props.item.individual.quantity;
+
     return (
       <tr>
         <td>{this.props.item.name}</td>
@@ -145,6 +164,6 @@ let Item = React.createClass({
 });
 
 ReactDOM.render(
-  <Budget />,
+  <Budget data={data} />,
   document.getElementById('budget')
 );
