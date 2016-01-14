@@ -51,8 +51,8 @@ let Budget = React.createClass({
 
 let Receipt = React.createClass({
   getInitialState () {
-    let items = this.props.items.sort(this.priceSort);
-    return {data: items};
+    let items = this.props.items.sort(this.nameSort);
+    return {data: items, sort: 'name'};
   },
 
   // A to Z
@@ -72,7 +72,21 @@ let Receipt = React.createClass({
   },
 
   toggleSortNames(e) {
-    this.setState({data: this.state.data.reverse()});
+    if (this.state.sort === 'name') {
+      this.setState({data: this.state.data.reverse()});
+    } else {
+      console.log('Switching to name sort');
+      this.setState({sort: 'name', data: this.state.data.sort(this.nameSort)});
+    }
+  },
+
+  toggleSortCost(e) {
+    if (this.state.sort === 'cost') {
+      this.setState({data: this.state.data.reverse()});
+    } else {
+      console.log('Switching to cost sort');
+      this.setState({sort: 'cost', data: this.state.data.sort(this.priceSort)});
+    }
   },
 
   render () {
@@ -91,7 +105,7 @@ let Receipt = React.createClass({
           <thead>
             <tr>
               <th onClick={this.toggleSortNames}>Item Name</th>
-              <th>Cost</th>
+              <th onClick={this.toggleSortCost}>Cost</th>
             </tr>
           </thead>
           <tbody>
