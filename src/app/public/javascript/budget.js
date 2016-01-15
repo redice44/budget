@@ -10,6 +10,7 @@ let data = [
           quantity: '6',
           cost: '18'
         },
+        category: 'food',
         amount: 1
       }, {
         name: 'Diet Cranberry Juice',
@@ -18,6 +19,7 @@ let data = [
           quantity: '64',
           cost: '3.21'
         },
+        category: 'food',
         amount: 8
       }, {
         name: 'Turkey Patties',
@@ -26,7 +28,59 @@ let data = [
           quantity: '1.55',
           cost: '5.55'
         },
+        category: 'food',
         amount: 2
+      }, {
+        name: 'Brown Rice',
+        individual: {
+          unit: 'lbs',
+          quantity: '4',
+          cost: '4.49'
+        },
+        category: 'food',
+        amount: 1
+      }
+    ],
+    location: 'BJs',
+    date: 'Jan 4'
+  }, {
+    items: [
+      {
+        name: 'Chicken',
+        individual: {
+          unit: 'lbs',
+          quantity: '6',
+          cost: '18'
+        },
+        category: 'food',
+        amount: 1
+      }, {
+        name: 'Diet Cranberry Juice',
+        individual: {
+          unit: 'oz',
+          quantity: '64',
+          cost: '3.21'
+        },
+        category: 'food',
+        amount: 8
+      }, {
+        name: 'Turkey Patties',
+        individual: {
+          unit: 'lbs',
+          quantity: '1.55',
+          cost: '5.55'
+        },
+        category: 'food',
+        amount: 2
+      }, {
+        name: 'Brown Rice',
+        individual: {
+          unit: 'lbs',
+          quantity: '4',
+          cost: '4.49'
+        },
+        category: 'food',
+        amount: 1
       }
     ],
     location: 'BJs',

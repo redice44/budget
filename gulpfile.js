@@ -29,7 +29,7 @@ let options = {
   css: { base: 'src' }
 }
 
-gulp.task('default', ['clean:app', 'build:server', 'build:client', 'build:html', 'build:css']);
+gulp.task('default', ['build:server', 'build:client', 'build:html', 'build:css']);
 
 gulp.task('watch', () => {
   gulp.watch(location.server, ['build:server']);
@@ -65,6 +65,6 @@ gulp.task('build:css', () => {
     .pipe(gulp.dest(location.build));
 });
 
-gulp.task('clean:app', () => {
+gulp.task('clean', () => {
   del([location.build]);
 });
